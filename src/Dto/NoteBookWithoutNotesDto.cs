@@ -9,5 +9,17 @@ namespace src.Dto
     {
         public int Id { get; set; }
         public string Title { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NoteBookWithoutNotesDto dto &&
+                   Id == dto.Id &&
+                   Title == dto.Title;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Title);
+        }
     }
 }

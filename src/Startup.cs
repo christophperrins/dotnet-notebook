@@ -18,6 +18,7 @@ using src.Dto;
 using src.Persistence.Repository;
 using src.Services;
 using src.Persistence.Model;
+using src.Configuation;
 
 namespace src
 {
@@ -33,34 +34,8 @@ namespace src
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<NoteTextDto, Note>()
-                    .ForMember(note => note.Id, opt => opt.Ignore())
-                    .ForMember(note => note.NoteBookId, opt => opt.Ignore())
-                    .ForMember(note => note.Notebook, opt => opt.Ignore());
 
-                cfg.CreateMap<NoteWithoutNotebookDto, Note>()
-                    .ForMember(note => note.NoteBookId, opt => opt.Ignore())
-                    .ForMember(note => note.Notebook, opt => opt.Ignore());
-
-                cfg.CreateMap<Note, NoteWithoutNotebookDto>();
-
-                cfg.CreateMap<NoteBookWithoutNotesDto, NoteBook>()
-                    .ForMember(notebook => notebook.Notes, opt => opt.Ignore());
-
-                cfg.CreateMap<NoteBookTitleDto, NoteBook>()
-                    .ForMember(notebook => notebook.Id, opt => opt.Ignore())
-                    .ForMember(notebook => notebook.Notes, opt => opt.Ignore());
-
-                cfg.CreateMap<NoteBook, NoteBookWithoutNotesDto>();
-                cfg.CreateMap<NoteBook, NoteBookDto>();
-    
-            });
- 
-            configuration.AssertConfigurationIsValid();
-            var mapper = configuration.CreateMapper();
-            
+            var mapper = new ApplicationConfiguration().CreateMapper();
             services.AddTransient<IMapper>(sp => mapper);
             services.AddTransient<IRepository<Note>, Repository<Note>>();
             services.AddTransient<IRepository<NoteBook>, Repository<NoteBook>>();

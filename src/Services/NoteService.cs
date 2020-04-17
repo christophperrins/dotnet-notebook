@@ -11,6 +11,7 @@ namespace src.Services
     {
         private readonly IRepository<Note> _noteRepository;
         private readonly IRepository<NoteBook> _noteBookRepository;
+
         public NoteService(IRepository<Note> repository, IRepository<NoteBook> noteBookRepository)
         {
             _noteRepository = repository;
@@ -19,8 +20,8 @@ namespace src.Services
 
         public async Task<List<Note>> GetAllNotesInNoteBookAsync(int notebookId)
         {
-            // TODO Need to do Eager loading because with lazy loading the notebook.Notes is going to return null
-            NoteBook notebook = await _noteBookRepository.GetSingleAsync(notebookId);
+            NoteBook notebook = await _noteBookRepository.GetSingleAsync(notebook => notebook.Id == notebookId, 
+                    notebook => notebook.Notes);
             return notebook.Notes;
         }
 

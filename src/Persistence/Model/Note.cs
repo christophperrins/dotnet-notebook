@@ -29,5 +29,16 @@ namespace src.Persistence.Model
         [ForeignKey("NoteBookId")]
         public NoteBook Notebook { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Note note &&
+                   Id == note.Id &&
+                   Text == note.Text;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Text);
+        }
     }
 }

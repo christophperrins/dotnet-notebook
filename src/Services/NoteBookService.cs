@@ -11,19 +11,25 @@ namespace src.Services
     public class NoteBookService
     {
         private readonly IRepository<NoteBook> _repository;
+
+        public NoteBookService()
+        {
+
+        }
+
         public NoteBookService(IRepository<NoteBook> repository)
         {
             _repository = repository;
         }
 
-        public async Task<List<NoteBook>> GetAllNoteBooks()
+        public virtual async Task<List<NoteBook>> GetAllNoteBooks()
         {
             return await _repository.GetAllAsync();
         }
 
         public async Task<NoteBook> GetNoteBook(int id)
         {
-            return await _repository.GetSingleAsync(id);
+            return await _repository.GetSingleAsync(notebook => notebook.Id == id, notebook => notebook.Notes);
         }
 
         public async Task<NoteBook> CreateNoteBook(NoteBook noteBook)

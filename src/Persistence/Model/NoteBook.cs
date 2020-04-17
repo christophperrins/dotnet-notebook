@@ -24,5 +24,16 @@ namespace src.Persistence.Model
         /// </summary>
         public List<Note> Notes { get; set; } = new List<Note>();
 
+        public override bool Equals(object obj)
+        {
+            return obj is NoteBook book &&
+                   Id == book.Id &&
+                   Title == book.Title;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Title, Notes);
+        }
     }
 }
